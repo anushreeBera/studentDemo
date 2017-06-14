@@ -9,11 +9,6 @@ alert('Hello Student, register yourself here.');
 var formData = document.createElement("FORM");
 var usersArray = [];
 
-//keeps track of the size of the array of Objects userArray[]
-var studentsNumber = 0;
-//keeps track of the number of rows in the Table
-var rowCount = 0;
-
 /**
 * Functionality: update student table to update the details of the students who have registered successfully
 * @params: null
@@ -87,13 +82,11 @@ function deleteRow(index)
 		var table = document.getElementById("studentTable");
 		var rowCount = table.rows.length;
 		
-		if(index < rowCount)
-		{
-			usersArray.splice(index-1, 1);
-			table.deleteRow(index);
-			rowCount = table.rows.length;
-			studentsNumber = usersArray.length;
-		}
+		usersArray.splice(index - 1, 1);
+		table.deleteRow(index);
+		rowCount = table.rows.length;
+		studentsNumber = usersArray.length;
+
 	}
 	catch(e)
 	{
@@ -108,7 +101,7 @@ function deleteRow(index)
 */
 function activateSubmit()
 {
-	document.form.submit.disabled = document.getElementById("iAgree").checked ? false : true;
+	document.form.submit.disabled = !document.getElementById("iAgree").checked;
 }
 /**
 * Functionality: validate the entire form before submitting it
