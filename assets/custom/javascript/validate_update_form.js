@@ -79,14 +79,16 @@ function deleteRow(index)
 {
 	try
 	{
-		var table = document.getElementById("studentTable");
-		var rowCount = table.rows.length;
-		
-		usersArray.splice(index - 1, 1);
-		table.deleteRow(index);
-		rowCount = table.rows.length;
-		studentsNumber = usersArray.length;
-
+		if(usersArray.length == 1)
+		{
+			usersArray.pop();
+			document.getElementById("studentTable").deleteRow(1);
+		}
+		else
+		{
+			usersArray.splice(index - 1, 1);
+			document.getElementById("studentTable").deleteRow(index);
+		}
 	}
 	catch(e)
 	{
