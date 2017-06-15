@@ -6,7 +6,6 @@ Created By : Anushree.
 */
 
 alert('Hello Student, register yourself here.');
-var formData = document.createElement("FORM");
 var usersArray = [];
 
 /**
@@ -17,6 +16,8 @@ var usersArray = [];
 function updateStudentTable()
 {
 	studentsNumber = usersArray.length;
+	
+	//checking if the username already exists
 	if(studentsNumber != 0)
 	{
 		for(var loopIterator = 0;loopIterator < studentsNumber;loopIterator++)
@@ -25,6 +26,8 @@ function updateStudentTable()
 				return alert("This Username is already taken.");
 		}
 	}
+	
+	//catching form data in an array, userObj and pushing it in an array of objects, usersArray
 	var userObj = {}
 	var formCollection = document.getElementById("form").elements;
 	var totalFields = formCollection.length;
@@ -32,6 +35,7 @@ function updateStudentTable()
 		userObj[formCollection[index].name] = formCollection[index].value;
 	});	
 	usersArray.push(userObj);
+	//adding a row to the table
 	addRow();
 	
 }
@@ -47,13 +51,13 @@ function addRow()
 
 	var rowCount = table.rows.length;
 	var row = table.insertRow(rowCount);
-
+	//adding a row to the table
 	row.insertCell(0).innerHTML = usersArray[studentsNumber].username;;
 	row.insertCell(1).innerHTML = usersArray[studentsNumber].fName;
 	row.insertCell(2).innerHTML = usersArray[studentsNumber].lName;
 	row.insertCell(3).innerHTML = usersArray[studentsNumber].dob;;
-	row.insertCell(4).innerHTML = '<input type="button" name="update" id="updateButton" value="Update" onclick="updateEntry(' + rowCount + ')">';
-	row.insertCell(5).innerHTML = '<input type="button" name="delete" id="deleteButton" value="Delete" onclick="deleteRow(' + rowCount + ')">';;
+	row.insertCell(4).innerHTML = '<input type="button" name="update" id="updateButton" value="Update" onclick="updateEntry(this)">';
+	row.insertCell(5).innerHTML = '<input type="button" name="delete" id="deleteButton" value="Delete" onclick="deleteRow(this)">';;
 }
 
 /**
@@ -61,13 +65,26 @@ function addRow()
 * @params: Number index  the index of the entry to be updated
 * @return: String
 */
-function updateEntry(index)
+function updateEntry(button)
 {
-
+	index = arguments[0].parentNode.parentNode.rowIndex;
+	
+	//populating the form fields with the usersArray values
     document.form.fName.value = usersArray[index - 1].fName;
+	document.form.mName.value = usersArray[index - 1].mName;
 	document.form.lName.value = usersArray[index - 1].lName;
+	document.form.fathersFirstName.value = usersArray[index - 1].fathersFirstName;
+	document.form.fathersLastName.value = usersArray[index - 1].fathersLastName;	
+	document.form.dob.value = usersArray[index - 1].dob;	
+	document.form.gender.checked = ((usersArray[index - 1].gender) == "male") ? true : false;
+	document.form.caste.value = usersArray[index - 1].caste;
+	document.form.email.value = usersArray[index - 1].email;
+	document.form.mobileNo.value = usersArray[index - 1].mobileNo;
+	document.form.permAddress.value = usersArray[index - 1].permAddress;
+	document.form.commAddress.value = usersArray[index - 1].commAddress;
 	document.form.username.value = usersArray[index - 1].username;
-
+	document.form.password1.value = usersArray[index - 1].password1;
+	document.form.password2.value = usersArray[index - 1].password2;
 }
 
 /**
@@ -75,25 +92,11 @@ function updateEntry(index)
 * @params: Number index  the index of the entry to be deleted 
 * @return: String
 */
-function deleteRow(index)
+function deleteRow(button)
 {
-	try
-	{
-		if(usersArray.length == 1)
-		{
-			usersArray.pop();
-			document.getElementById("studentTable").deleteRow(1);
-		}
-		else
-		{
-			usersArray.splice(index - 1, 1);
-			document.getElementById("studentTable").deleteRow(index);
-		}
-	}
-	catch(e)
-	{
-		alert(e);
-	}
+	index = arguments[0].parentNode.parentNode.rowIndex;
+	usersArray.splice(index - 1, 1);
+	document.getElementById("studentTable").deleteRow(index);
 }
 
 /**
