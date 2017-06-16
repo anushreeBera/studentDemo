@@ -1,12 +1,13 @@
 /*
 Creation date: 6-6-2017
 Purpose:  validating and updating(update/delete) the HTML page student_registration_form.html
-File Path: D:/Projects/studentDemo/assets/custom/javascript/validate_update_form.js
+File Path: studentDemo/assets/custom/javascript/validate_update_form.js
 Created By : Anushree.
 */
 
 alert('Hello Student, register yourself here.');
 var usersArray = [];
+var flag = 0;
 
 /**
 * Functionality: update student table to update the details of the students who have registered successfully
@@ -23,7 +24,17 @@ function updateStudentTable()
 		for(var loopIterator = 0;loopIterator < studentsNumber;loopIterator++)
 		{
 			if(usersArray[loopIterator].username === document.getElementById("userName").value)
-				return alert("This Username is already taken.");
+			{
+				if(flag == 0)
+					return alert("This Username is already taken.");
+				else
+				{
+					//resetting global update flag to false
+					flag = 0;
+					
+					return alert("Updating existing user!");
+				}
+			}
 		}
 	}
 	
@@ -35,6 +46,7 @@ function updateStudentTable()
 		userObj[formCollection[index].name] = formCollection[index].value;
 	});	
 	usersArray.push(userObj);
+	
 	//adding a row to the table
 	addRow();
 	
@@ -51,6 +63,7 @@ function addRow()
 
 	var rowCount = table.rows.length;
 	var row = table.insertRow(rowCount);
+	
 	//adding a row to the table
 	row.insertCell(0).innerHTML = usersArray[studentsNumber].username;;
 	row.insertCell(1).innerHTML = usersArray[studentsNumber].fName;
@@ -69,6 +82,8 @@ function updateEntry(button)
 {
 	index = arguments[0].parentNode.parentNode.rowIndex;
 	
+	var table = document.getElementById("studentTable");
+	
 	//populating the form fields with the usersArray values
     document.form.fName.value = usersArray[index - 1].fName;
 	document.form.mName.value = usersArray[index - 1].mName;
@@ -85,6 +100,36 @@ function updateEntry(button)
 	document.form.username.value = usersArray[index - 1].username;
 	document.form.password1.value = usersArray[index - 1].password1;
 	document.form.password2.value = usersArray[index - 1].password2;
+	
+	//setting global flag for update to true
+	flag = 1;
+	
+	//checking if the username is changed or not	
+	$('#submitButton').click(function(){
+		if(usersArray[index - 1].username === document.getElementById("userName").value)
+		{
+			//storing the other form fields in usersArray
+			usersArray[index - 1].fName = document.form.fName.value;
+			usersArray[index - 1].mName = document.form.mName.value;
+			usersArray[index - 1].lName = document.form.lName.value;
+			usersArray[index - 1].fathersFirstName = document.form.fathersFirstName.value;
+			usersArray[index - 1].fathersLastName = document.form.fathersLastName.value;
+			usersArray[index - 1].dob = document.form.dob.value;
+			usersArray[index - 1].caste = document.form.caste.value;
+			usersArray[index - 1].email = document.form.email.value;
+			usersArray[index - 1].mobileNo = document.form.mobileNo.value;
+			usersArray[index - 1].permAddress = document.form.permAddress.value;
+			usersArray[index - 1].commAddress = document.form.commAddress.value;
+			usersArray[index - 1].password1 = document.form.password1.value;
+			usersArray[index - 1].password2 = document.form.password2.value;
+			
+			//updating the row of the table
+			table.rows[index].cells[0].innerHTML = usersArray[index - 1].username;
+			table.rows[index].cells[1].innerHTML = usersArray[index - 1].fName;
+			table.rows[index].cells[2].innerHTML = usersArray[index - 1].lName;
+			table.rows[index].cells[3].innerHTML = usersArray[index - 1].dob;
+		}	
+	});
 }
 
 /**
@@ -94,8 +139,13 @@ function updateEntry(button)
 */
 function deleteRow(button)
 {
+	//finding the row index of the button
 	index = arguments[0].parentNode.parentNode.rowIndex;
+		
+	//deleting the object from usersArray
 	usersArray.splice(index - 1, 1);
+		
+	//deleting the row entry from the table
 	document.getElementById("studentTable").deleteRow(index);
 }
 
