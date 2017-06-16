@@ -43,7 +43,7 @@ p{
 	text-align:center;
 }
 input[type=button]:disabled {
-    background: #dddddd;
+    background:#dddddd;
 }
 input[type=button], input[type=reset] {
 	background-color:green;
